@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>半導体産業 縦型フロー図 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap');
+
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+body{
+  font-family:'Klee One',cursive;
+  background:#ddd5c2;
+  padding:24px 16px 40px;
+  min-height:100vh;
+}
+
+/* ─── PAGE ─── */
+.page{
+  max-width:980px;
+  margin:0 auto;
+  background:#fdf8f0;
+  background-image:
+    linear-gradient(rgba(160,140,100,0.1) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(160,140,100,0.1) 1px,transparent 1px);
+  background-size:28px 28px;
+  padding:28px 32px 36px;
+  border-radius:3px;
+  box-shadow:0 6px 32px rgba(0,0,0,0.22);
+}
+
+.print-btn{
+  position:fixed; top:14px; right:14px; z-index:999;
+  background:#1a1a2e; color:#fdf8f0;
+  border:none; padding:9px 20px; border-radius:5px;
+  font-family:inherit; font-size:13px; cursor:pointer;
+  box-shadow:3px 3px 0 rgba(0,0,0,0.25);
+}
+
+@media print{
+  html{ zoom:0.52; }
+  body{ background:#fff; padding:0; }
+  .page{ max-width:100%; box-shadow:none; padding:2mm 6mm; background-image:none; }
+  .print-btn{ display:none; }
+  @page{ size:A4 portrait; margin:3mm; }
+}
+
+/* ─── HEADER ─── */
+.hd{ text-align:center; padding-bottom:14px; border-bottom:2.5px solid #1a1a2e; margin-bottom:16px; }
+.hd h1{ font-size:24px; font-weight:600; letter-spacing:2px; color:#1a1a2e; }
+.hd p{ font-size:11px; color:#64748b; margin-top:4px; letter-spacing:0.8px; }
+
+/* ─── CHAIN BAR ─── */
+.chain{
+  display:flex; align-items:center; justify-content:center;
+  gap:4px; flex-wrap:wrap; margin-bottom:22px;
+}
+.ch-step{
+  font-size:10.5px; font-weight:600;
+  padding:4px 11px; border:1.5px solid; border-radius:20px;
+}
+.ch-arr{ color:#94a3b8; font-size:15px; }
+
+/* ─── LAYER ROW ─── */
+.layer{
+  display:grid;
+  grid-template-columns:1fr 200px 1fr;
+  gap:0;
+  align-items:center;
+  border-radius:10px;
+  padding:12px 0;
+}
+
+/* ─── LEFT / RIGHT COLUMNS ─── */
+.lc,.rc{
+  display:flex; flex-direction:column; gap:7px;
+  padding:6px 0;
+}
+.lc{ align-items:flex-end; padding-right:16px; border-right:2px solid; }
+.rc{ align-items:flex-start; padding-left:16px; border-left:2px solid; }
+
+/* ─── CENTER NODE ─── */
+.cc{ padding:0 14px; }
+.cn{
+  text-align:center;
+  padding:13px 10px;
+  border:2.5px solid;
+  font-size:13px; font-weight:600; line-height:1.5;
+  box-shadow:3px 3px 0 rgba(0,0,0,0.12);
+}
+.cn small{ display:block; font-size:10px; font-weight:400; margin-top:2px; opacity:0.8; }
+.cn .num{ font-size:18px; display:block; margin-bottom:2px; }
+
+/* ─── COMPANY CARD ─── */
+.card{
+  padding:6px 10px;
+  border:1.5px solid;
+  font-size:10.5px; line-height:1.4;
+  box-shadow:2px 2px 0 rgba(0,0,0,0.08);
+  max-width:230px;
+}
+.card b{ display:block; font-size:11.5px; }
+.card s2{ display:block; font-size:9.5px; opacity:0.75; }
+
+/* ─── PILL ─── */
+.pill{
+  display:inline-block; font-size:8.5px; font-weight:600;
+  padding:1px 6px; border-radius:20px; margin-top:2px;
+}
+.p-top{ background:#bbf7d0; color:#14532d; }
+.p-warn{ background:#fef08a; color:#713f12; }
+.p-new{ background:#e9d5ff; color:#4c1d95; }
+.p-bad{ background:#fecaca; color:#7f1d1d; }
+.p-jp{ background:#fee2e2; color:#991b1b; }
+
+/* ─── SHARE BAR ─── */
+.mbar{ margin-top:6px; }
+.mbar-track{
+  height:6px; background:rgba(0,0,0,0.1);
+  border-radius:4px; overflow:hidden; margin-bottom:3px;
+}
+.mbar-fill{ height:100%; border-radius:4px; background:currentColor; opacity:0.5; }
+.mbar-info{ font-size:8px; opacity:0.62; line-height:1.4; }
+/* eq-card bar */
+.eq-mbar{ margin-top:5px; }
+.eq-mbar-track{
+  height:5px; background:rgba(0,0,0,0.1);
+  border-radius:3px; overflow:hidden; margin-bottom:2px;
+}
+.eq-mbar-fill{ height:100%; border-radius:3px; background:#d97706; opacity:0.55; }
+.eq-mbar-info{ font-size:7.5px; color:#92400e; opacity:0.75; }
+
+/* ─── FLOW ARROW ─── */
+.arr{
+  display:flex; flex-direction:column; align-items:center;
+  padding:6px 0; gap:5px;
+}
+.arr-badge{
+  font-size:12px; font-weight:700;
+  color:#fff; padding:6px 20px;
+  border-radius:20px;
+  box-shadow:3px 3px 0 rgba(0,0,0,0.18);
+  letter-spacing:0.3px;
+}
+@media print{ .arr-badge{ box-shadow:none; border:1px solid rgba(0,0,0,0.3); } }
+
+/* ─── EQUIPMENT BAND ─── */
+.eq-band{
+  margin:8px 0;
+  padding:10px 16px 12px;
+  border:2px solid #d97706;
+  border-radius:6px 12px 8px 4px / 12px 6px 4px 8px;
+  background:rgba(255,251,235,0.9);
+  position:relative;
+}
+.eq-band-title{
+  position:absolute; top:-11px; left:14px;
+  background:#fdf8f0; padding:0 6px;
+  font-size:10.5px; font-weight:600; color:#78350f;
+}
+.eq-grid{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(155px,1fr)); gap:8px;
+  margin-top:4px;
+}
+.eq-card{
+  text-align:center; padding:7px 8px;
+  border:1.5px solid #f59e0b;
+  border-radius:5px 9px 6px 11px / 9px 5px 11px 6px;
+  background:#fffbeb; font-size:10px; line-height:1.45;
+  box-shadow:2px 2px 0 rgba(0,0,0,0.07);
+}
+.eq-card b{ font-size:11px; color:#78350f; display:block; }
+.eq-card span{ font-size:9px; color:#92400e; }
+
+/* ─── RELAY ─── */
+.relay{
+  margin-top:18px; padding:13px 16px;
+  border:1.5px solid #475569;
+  border-radius:8px 4px 10px 6px / 4px 10px 6px 8px;
+}
+.relay h3{ font-size:12px; font-weight:600; color:#1e293b; margin-bottom:10px; }
+.relay-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+.rc2{
+  padding:8px 10px;
+  border:1px solid #94a3b8;
+  border-radius:5px 9px 7px 3px / 9px 5px 3px 7px;
+  font-size:9.5px; color:#334155; line-height:1.6;
+}
+.rc2 b{ font-size:10.5px; display:block; margin-bottom:4px; color:#1e293b; }
+.rch{ display:flex; flex-wrap:wrap; gap:3px; align-items:center; margin-bottom:5px; }
+.rchip{
+  font-size:8.5px; font-weight:700;
+  padding:1px 7px; border-radius:20px;
+}
+
+/* ─── JAPAN BOX ─── */
+.jp-box{
+  margin-top:12px; padding:10px 14px;
+  border:1.5px solid #15803d;
+  border-radius:6px 12px 8px 4px / 12px 6px 4px 8px;
+  background:rgba(240,255,244,0.9);
+  font-size:10px; color:#14532d; line-height:1.8;
+}
+.jp-box b{ font-size:11.5px; }
+
+/* ─── FOOTER ─── */
+.ft{
+  margin-top:18px; padding-top:10px;
+  border-top:1px solid #cbd5e1;
+  display:flex; justify-content:space-between;
+  font-size:9px; color:#94a3b8;
+}
+
+/* ════════════ COLOR THEMES ════════════ */
+/* ① teal */
+.c1{ background:rgba(204,251,241,0.18); }
+.c1 .cn{ border-color:#0f766e; color:#0f766e; background:#f0fdfa; border-radius:7px 13px 9px 5px/13px 7px 5px 9px; }
+.c1 .lc,.c1 .rc{ border-color:#14b8a6; }
+.c1 .card{ border-color:#14b8a6; color:#134e4a; background:#f0fdfa; border-radius:4px 8px 5px 10px/8px 4px 10px 5px; }
+/* ② violet */
+.c2{ background:rgba(237,233,254,0.22); }
+.c2 .cn{ border-color:#7c3aed; color:#5b21b6; background:#f5f3ff; border-radius:11px 5px 13px 7px/5px 13px 7px 11px; }
+.c2 .lc,.c2 .rc{ border-color:#8b5cf6; }
+.c2 .card{ border-color:#8b5cf6; color:#4c1d95; background:#f5f3ff; border-radius:5px 10px 7px 12px/10px 5px 12px 7px; }
+/* ③ blue */
+.c3{ background:rgba(219,234,254,0.22); }
+.c3 .cn{ border-color:#2563eb; color:#1e40af; background:#eff6ff; border-radius:9px 5px 11px 7px/5px 11px 7px 9px; }
+.c3 .lc,.c3 .rc{ border-color:#3b82f6; }
+.c3 .card{ border-color:#3b82f6; color:#1e3a5f; background:#eff6ff; border-radius:6px 11px 4px 9px/11px 6px 9px 4px; }
+/* ⑤ crimson */
+.c5{ background:rgba(255,225,228,0.22); }
+.c5 .cn{ border-color:#e11d48; color:#9f1239; background:#fff1f2; border-radius:8px 14px 6px 12px/14px 8px 12px 6px; }
+.c5 .lc,.c5 .rc{ border-color:#f43f5e; }
+.c5 .card{ border-color:#f43f5e; color:#881337; background:#fff1f2; border-radius:4px 9px 6px 11px/9px 4px 11px 6px; }
+/* ⑥ emerald */
+.c6{ background:rgba(209,250,229,0.22); }
+.c6 .cn{ border-color:#059669; color:#065f46; background:#ecfdf5; border-radius:10px 4px 12px 6px/4px 12px 6px 10px; }
+.c6 .lc,.c6 .rc{ border-color:#10b981; }
+.c6 .card{ border-color:#10b981; color:#064e3b; background:#ecfdf5; border-radius:5px 10px 8px 4px/10px 5px 4px 8px; }
+/* ⑦ indigo */
+.c7{ background:rgba(238,242,255,0.22); }
+.c7 .cn{ border-color:#4338ca; color:#3730a3; background:#eef2ff; border-radius:6px 12px 8px 4px/12px 6px 4px 8px; }
+.c7 .lc,.c7 .rc{ border-color:#6366f1; }
+.c7 .card{ border-color:#6366f1; color:#312e81; background:#eef2ff; border-radius:9px 4px 11px 6px/4px 11px 6px 9px; }
+</style>
+</head>
+<body>
+
+<button class="print-btn" onclick="window.print()">🖨 印刷（A4縦）</button>
+
+<div class="page">
+
+<!-- ═══ HEADER ═══ -->
+<div class="hd">
+  <h1>半導体産業 全体相関図 2026</h1>
+  <p>サプライチェーン縦型フロー ／ 設計・製造・材料・装置・メモリ・AI/LLM を一枚で俯瞰する</p>
+</div>
+
+<!-- ═══ 用語解説 ═══ -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;">
+
+  <!-- IC設計とは -->
+  <div style="border:1.5px solid #8b5cf6;border-radius:8px 14px 10px 5px/14px 8px 5px 10px;
+              background:#f5f3ff;padding:12px 14px;position:relative;">
+    <div style="position:absolute;top:-11px;left:12px;background:#fdf8f0;padding:0 6px;
+                font-size:10.5px;font-weight:700;color:#5b21b6;">
+      📖 ① IC設計とは
+    </div>
+    <p style="font-size:10.5px;color:#3b0764;line-height:1.75;margin-top:4px;">
+      <b>IC（Integrated Circuit＝集積回路）</b>の回路を作る工程のこと。<br>
+      数十億個ものトランジスタを組み合わせた超微細な回路を、
+      EDA（電子設計自動化）ソフトを使ってコンピューター上で設計し、
+      「マスク（原版）」と呼ばれる設計図に落とし込む。<br>
+      <span style="color:#7c3aed;font-weight:600">▶ ②ファブレス企業が担う「知能の設計」フェーズ。</span>
+      工場（ファウンドリ）を持たずに設計のみに特化することで、
+      NVIDIA・Appleのような高付加価値ビジネスが成立する。
+    </p>
+  </div>
+
+  <!-- nmとは -->
+  <div style="border:1.5px solid #3b82f6;border-radius:14px 6px 12px 8px/6px 14px 8px 12px;
+              background:#eff6ff;padding:12px 14px;position:relative;">
+    <div style="position:absolute;top:-11px;left:12px;background:#fdf8f0;padding:0 6px;
+                font-size:10.5px;font-weight:700;color:#1e40af;">
+      📖 ② ㎚（ナノメートル）とは
+    </div>
+    <p style="font-size:10.5px;color:#1e3a5f;line-height:1.75;margin-top:4px;">
+      半導体の<b>トランジスタの回路線幅</b>を表す単位。<br>
+      <b>1nm ＝ 10億分の1メートル</b>（髪の毛の約10万分の1）。<br>
+      数字が小さい＝線が細い＝同じ面積にトランジスタを多く詰め込める
+      ＝<span style="color:#2563eb;font-weight:600">高性能・省電力・小型化</span>が実現する。<br>
+      <span style="display:inline-block;margin-top:4px;font-size:9.5px;
+                  background:#dbeafe;padding:3px 8px;border-radius:6px;color:#1e40af;">
+        90nm（2004）→ 14nm（2014）→ 5nm（2020）→ 2nm（2025〜）
+      </span><br>
+      <span style="color:#2563eb;font-weight:600">▶ ③ファウンドリ各社がこの「何nm」を競っている。</span>
+      現在の最先端はTSMCの2nm / 1.6nm。
+    </p>
+  </div>
+
+</div>
+
+<!-- ═══ CHAIN BAR ═══ -->
+<div class="chain">
+  <span class="ch-step" style="border-color:#14b8a6;color:#0f766e;background:#f0fdfa">⚗️ 材料・IP・EDA</span>
+  <span class="ch-arr">→</span>
+  <span class="ch-step" style="border-color:#8b5cf6;color:#5b21b6;background:#f5f3ff">🧠 ファブレス設計</span>
+  <span class="ch-arr">→</span>
+  <span class="ch-step" style="border-color:#3b82f6;color:#1e40af;background:#eff6ff">🏭 ファウンドリ製造</span>
+  <span class="ch-arr">↑ 支える</span>
+  <span class="ch-step" style="border-color:#d97706;color:#78350f;background:#fffbeb">⚙️ 製造装置</span>
+  <span class="ch-arr">→</span>
+  <span class="ch-step" style="border-color:#f43f5e;color:#9f1239;background:#fff1f2">💾 メモリ</span>
+  <span class="ch-arr">→</span>
+  <span class="ch-step" style="border-color:#6366f1;color:#3730a3;background:#eef2ff">📦 パッケージング</span>
+  <span class="ch-arr">→</span>
+  <span class="ch-step" style="border-color:#059669;color:#065f46;background:#ecfdf5">🤖 AI / LLM 製品</span>
+</div>
+
+<!-- ═══════════════════════════════
+     ① 基盤レイヤー　材料・EDA・IP
+═══════════════════════════════ -->
+<div class="layer c1">
+  <div class="lc">
+    <div class="card c1">
+      <b>🇯🇵 信越化学</b>
+      <s2>シリコンウェハー世界首位</s2>
+      <s2>替えのきかない存在</s2>
+      <span class="pill p-jp">🇯🇵 日本の急所</span>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:27%"></div></div>
+      <div class="mbar-info">時価総額 約$400億　セクション内 27%</div></div>
+    </div>
+    <div class="card c1">
+      <b>🇯🇵 JSR</b>
+      <s2>EUV用フォトレジスト</s2>
+      <s2>2nm露光に必須の感光材料</s2>
+      <span class="pill p-jp">🇯🇵 日本の急所</span>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:4%"></div></div>
+      <div class="mbar-info">時価総額 約$60億　セクション内 4%</div></div>
+    </div>
+    <div class="card c1">
+      <b>🇯🇵 富士フイルム</b>
+      <s2>高純度レジスト・機能性材料</s2>
+      <s2>画像技術を化学素材に転用</s2>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:16%"></div></div>
+      <div class="mbar-info">時価総額 約$240億　セクション内 16%</div></div>
+    </div>
+  </div>
+
+  <div class="cc">
+    <div class="cn">
+      <span class="num">①</span>
+      基盤レイヤー
+      <small>材料 ／ EDA ／ IP</small>
+    </div>
+  </div>
+
+  <div class="rc">
+    <div class="card c1">
+      <b>🇬🇧 Arm</b>
+      <s2>IC設計の共通言語（IP）</s2>
+      <s2>スマホ・AIチップほぼ全てに使用</s2>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:100%"></div></div>
+      <div class="mbar-info">時価総額 約$1,500億　セクション内 最大 ★</div></div>
+    </div>
+    <div class="card c1">
+      <b>🇺🇸 Cadence</b>
+      <s2>EDA：超高精度回路設計CAD</s2>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:50%"></div></div>
+      <div class="mbar-info">時価総額 約$750億　セクション内 50%</div></div>
+    </div>
+    <div class="card c1">
+      <b>🇺🇸 Synopsys</b>
+      <s2>EDA世界2強・AI設計支援も先行</s2>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:57%"></div></div>
+      <div class="mbar-info">時価総額 約$850億　セクション内 57%</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ↓ arrow -->
+<div class="arr">
+  <svg width="40" height="32"><line x1="20" y1="0" x2="20" y2="22" stroke="#7c3aed" stroke-width="2.5"/><polygon points="11,18 20,32 29,18" fill="#7c3aed"/></svg>
+  <div class="arr-badge" style="background:#7c3aed">🧠 設計図をチップ会社へ</div>
+</div>
+
+<!-- ═══════════════════════════════
+     ② ファブレス設計
+═══════════════════════════════ -->
+<div class="layer c2">
+  <div class="lc">
+    <div class="card c2">
+      <b>🇺🇸 NVIDIA</b>
+      <s2>GPU / AI加速器の絶対王者</s2>
+      <s2>H100・B200 → データセンター席巻</s2>
+      <span class="pill p-top">◎ AI時代の覇者</span>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:100%"></div></div>
+      <div class="mbar-info">時価総額 約$3.3兆　セクション内 最大 ★</div></div>
+    </div>
+    <div class="card c2">
+      <b>🍎 Apple</b>
+      <s2>M4チップ搭載・TSMC 3nm</s2>
+      <s2>AI処理をデバイスに内蔵</s2>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:91%"></div></div>
+      <div class="mbar-info">時価総額 約$3.0兆　セクション内 91%</div></div>
+    </div>
+    <div class="card c2">
+      <b>🇺🇸 AMD</b>
+      <s2>MI300X AI加速器でNVに対抗</s2>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:5%"></div></div>
+      <div class="mbar-info">時価総額 約$1,800億　セクション内 5%</div></div>
+    </div>
+  </div>
+
+  <div class="cc">
+    <div class="cn">
+      <span class="num">②</span>
+      ファブレス設計
+      <small>工場なし・知能の設計</small>
+    </div>
+  </div>
+
+  <div class="rc">
+    <div class="card c2">
+      <b>🇺🇸 Qualcomm</b>
+      <s2>Snapdragon・スマホ/車載</s2>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:4%"></div></div>
+      <div class="mbar-info">時価総額 約$1,400億　セクション内 4%</div></div>
+    </div>
+    <div class="card c2">
+      <b>🇨🇳 Huawei</b>
+      <s2>Kirin独自開発・SMIC頼み</s2>
+      <span class="pill p-bad">⚠ 米制裁下</span>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:0%"></div></div>
+      <div class="mbar-info">非上場（株式市場データなし）</div></div>
+    </div>
+    <div class="card c2">
+      <b>🇯🇵 ソシオネクスト</b>
+      <s2>富士通・パナソニック系 日本最大のファブレス</s2>
+      <s2>車載カメラ・映像SoC・データセンター向け</s2>
+      <s2>製造はTSMCに委託（東証プライム 6526）</s2>
+      <span class="pill p-jp">🇯🇵 日本ファブレス</span>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:2%"></div></div>
+      <div class="mbar-info">時価総額 約$30億　セクション内 約1%</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ↓ arrow -->
+<div class="arr">
+  <svg width="40" height="32"><line x1="20" y1="0" x2="20" y2="22" stroke="#2563eb" stroke-width="2.5"/><polygon points="11,18 20,32 29,18" fill="#2563eb"/></svg>
+  <div class="arr-badge" style="background:#2563eb">🏭 設計図をファウンドリへ委託</div>
+</div>
+
+<!-- ═══════════════════════════════
+     ③ ファウンドリ（受託製造）
+═══════════════════════════════ -->
+<div class="layer c3">
+  <div class="lc">
+    <div class="card c3">
+      <b>🇹🇼 TSMC</b>
+      <s2>2nm / 1.6nm ─ 圧倒的世界首位</s2>
+      <s2>Apple・NVIDIAの主力を量産</s2>
+      <span class="pill p-top">◎ 最先端</span>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:100%"></div></div>
+      <div class="mbar-info">時価総額 約$9,000億　セクション内 最大 ★</div></div>
+    </div>
+    <div class="card c3">
+      <b>🇰🇷 Samsung</b>
+      <s2>2nm GAA構造・TSMCを追撃</s2>
+      <span class="pill p-warn">△ 挑戦中</span>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:31%"></div></div>
+      <div class="mbar-info">時価総額 約$2,800億（全社）　31%</div></div>
+    </div>
+    <div class="card c3">
+      <b>🇨🇳 SMIC</b>
+      <s2>5nm（制裁下で独自進化継続）</s2>
+      <span class="pill p-bad">⚠ 制裁下</span>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:5%"></div></div>
+      <div class="mbar-info">時価総額 約$450億　セクション内 5%</div></div>
+    </div>
+  </div>
+
+  <div class="cc">
+    <div class="cn">
+      <span class="num">③</span>
+      ファウンドリ
+      <small>受託製造・nm競争最前線</small>
+    </div>
+  </div>
+
+  <div class="rc">
+    <div class="card c3">
+      <b>🇺🇸 Intel</b>
+      <s2>Intel 18A（1.8nm相当）</s2>
+      <s2>「IDM 2.0」で外販事業を開始</s2>
+      <span class="pill p-warn">▲ 復活中</span>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:11%"></div></div>
+      <div class="mbar-info">時価総額 約$950億　セクション内 11%</div></div>
+    </div>
+    <div class="card c3">
+      <b>🇯🇵 Rapidus</b>
+      <s2>北海道で試作テスト中</s2>
+      <s2>2nm 2027年量産開始目標</s2>
+      <span class="pill p-new">★ 国家プロジェクト</span>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:0%"></div></div>
+      <div class="mbar-info">非上場（国策会社・株式市場未公開）</div></div>
+    </div>
+    <div class="card c3">
+      <b>🇯🇵 ローム（Rohm）</b>
+      <s2>自社設計・自社製造のIDM（垂直統合）</s2>
+      <s2>SiCパワー半導体でEV向け世界上位</s2>
+      <s2>アナログ・ディスクリート分野の雄</s2>
+      <span class="pill p-jp">🇯🇵 IDM・SiC強者</span>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:2%"></div></div>
+      <div class="mbar-info">時価総額 約$70億　セクション内 約1%</div></div>
+    </div>
+    <div class="card c3">
+      <b>🇯🇵 ルネサスエレクトロニクス</b>
+      <s2>車載マイコン（MCU）世界シェア No.1</s2>
+      <s2>旧NEC・日立・三菱電機の半導体部門が統合</s2>
+      <s2>自動車・産業・IoT向けIDM（東証プライム 6723）</s2>
+      <span class="pill p-jp">🇯🇵 車載半導体の雄</span>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:3%"></div></div>
+      <div class="mbar-info">時価総額 約$200億　セクション内 約3%</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ④ 製造装置帯（ファウンドリを支える） -->
+<div class="eq-band">
+  <div class="eq-band-title">⚙️ ④ 製造装置 ── ファウンドリを支える「魔法の機械」群</div>
+  <div class="eq-grid">
+    <div class="eq-card">
+      <b>🇳🇱 ASML</b>
+      <span>EUV露光装置・世界独占<br>2nm製造に必須。1台約300億円</span>
+      <br><span class="pill p-top">◎ 世界独占</span>
+      <div class="eq-mbar"><div class="eq-mbar-track"><div class="eq-mbar-fill" style="width:100%"></div></div>
+      <div class="eq-mbar-info">時価総額 約$3,500億 ★最大</div></div>
+    </div>
+    <div class="eq-card">
+      <b>🇯🇵 東京エレクトロン</b>
+      <span>コータ・デベロッパー<br>感光液の塗布・現像・洗浄</span>
+      <br><span class="pill p-jp">🇯🇵 強者</span>
+      <div class="eq-mbar"><div class="eq-mbar-track"><div class="eq-mbar-fill" style="width:13%"></div></div>
+      <div class="eq-mbar-info">時価総額 約$450億　13%</div></div>
+    </div>
+    <div class="eq-card">
+      <b>🇯🇵 アドバンテスト</b>
+      <span>AI用チップの最終試験装置<br>良品判定の「最終審判」</span>
+      <br><span class="pill p-jp">🇯🇵 強者</span>
+      <div class="eq-mbar"><div class="eq-mbar-track"><div class="eq-mbar-fill" style="width:8%"></div></div>
+      <div class="eq-mbar-info">時価総額 約$280億　8%</div></div>
+    </div>
+    <div class="eq-card">
+      <b>🇯🇵 レーザーテック</b>
+      <span>EUVマスク欠陥検査<br>世界シェア100%の日本技術</span>
+      <br><span class="pill p-jp">🇯🇵 独占</span>
+      <div class="eq-mbar"><div class="eq-mbar-track"><div class="eq-mbar-fill" style="width:6%"></div></div>
+      <div class="eq-mbar-info">時価総額 約$220億　6%</div></div>
+    </div>
+    <div class="eq-card">
+      <b>🇯🇵 SCREENホールディングス</b>
+      <span>ウェハー洗浄・基板処理装置<br>極限クリーン技術で世界上位</span>
+      <br><span class="pill p-jp">🇯🇵 洗浄装置</span>
+      <div class="eq-mbar"><div class="eq-mbar-track"><div class="eq-mbar-fill" style="width:2%"></div></div>
+      <div class="eq-mbar-info">時価総額 約$60億　2%</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ↓ arrow -->
+<div class="arr">
+  <svg width="40" height="32"><line x1="20" y1="0" x2="20" y2="22" stroke="#e11d48" stroke-width="2.5"/><polygon points="11,18 20,32 29,18" fill="#e11d48"/></svg>
+  <div class="arr-badge" style="background:#e11d48">💾 AIチップにメモリを「合体」させる</div>
+</div>
+
+<!-- ═══════════════════════════════
+     ⑤ メモリ（AIの燃料）
+═══════════════════════════════ -->
+<div class="layer c5">
+  <div class="lc">
+    <div class="card c5">
+      <b>🇺🇸 Micron ⭐</b>
+      <s2>DRAM / HBM3E ── 世界3強の一角</s2>
+      <s2>NVIDIAのH200/B200にHBM供給</s2>
+      <s2>広島工場 ── 日本の重要製造拠点</s2>
+      <span class="pill p-top">★ 注目企業</span>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:100%"></div></div>
+      <div class="mbar-info">時価総額 約$1,200億　セクション内 最大 ★</div></div>
+    </div>
+    <div class="card c5">
+      <b>🇯🇵 キオクシア</b>
+      <s2>NANDフラッシュ・300層超の積層</s2>
+      <s2>スマホ・SSD用「巨大データ倉庫」</s2>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:10%"></div></div>
+      <div class="mbar-info">時価総額 約$120億　セクション内 10%</div></div>
+    </div>
+  </div>
+
+  <div class="cc">
+    <div class="cn">
+      <span class="num">⑤</span>
+      メモリ
+      <small>AIの燃料・HBM競争</small>
+    </div>
+  </div>
+
+  <div class="rc">
+    <div class="card c5">
+      <b>🇰🇷 SK Hynix</b>
+      <s2>HBM4 開発中・NVIDIA最大供給元</s2>
+      <s2>HBM競争でMicronより先行</s2>
+      <span class="pill p-top">HBM先行</span>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:71%"></div></div>
+      <div class="mbar-info">時価総額 約$850億　セクション内 71%</div></div>
+    </div>
+    <div class="card c5">
+      <b>🇰🇷 Samsung Memory</b>
+      <s2>DRAM世界首位・ファウンドリ兼業</s2>
+      <s2>HBM4でHynixを猛追</s2>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:100%"></div></div>
+      <div class="mbar-info">Samsung全社 約$2,800億（メモリ以外も含む参考値）</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── HBM解説バンド ─── -->
+<div style="margin:8px 0;padding:12px 16px 14px;border:2px solid #e11d48;
+            border-radius:6px 12px 8px 4px/12px 6px 4px 8px;
+            background:rgba(255,241,242,0.92);position:relative;">
+  <div style="position:absolute;top:-11px;left:14px;background:#fdf8f0;padding:0 6px;
+              font-size:10.5px;font-weight:700;color:#9f1239;">
+    📖 HBM（High Bandwidth Memory）とは
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:6px;">
+
+    <div style="padding:8px 10px;border:1.5px solid #fca5a5;border-radius:5px 9px 6px 11px/9px 5px 11px 6px;
+                background:#fff1f2;font-size:9.5px;color:#7f1d1d;line-height:1.65;">
+      <b style="font-size:10.5px;display:block;margin-bottom:4px;color:#9f1239;">🏗️ 構造</b>
+      DRAMチップを<b>縦に何層も積み重ね</b>（スタック）、<br>
+      TSV（貫通電極）で貫いて電気的につないだ超高速メモリ。<br>
+      <span style="display:inline-block;margin-top:4px;background:#fecdd3;padding:2px 7px;border-radius:10px;font-size:8.5px;color:#9f1239;">
+        HBM2E → HBM3 → HBM3E → HBM4（最新）
+      </span>
+    </div>
+
+    <div style="padding:8px 10px;border:1.5px solid #fca5a5;border-radius:9px 5px 11px 6px/5px 11px 6px 9px;
+                background:#fff1f2;font-size:9.5px;color:#7f1d1d;line-height:1.65;">
+      <b style="font-size:10.5px;display:block;margin-bottom:4px;color:#9f1239;">⚡ なぜAIに必須？</b>
+      AIは膨大なパラメータ（数千億〜数兆）を高速で読み書きする。<br>
+      通常のDDR DRAMでは<b>帯域が足りず</b>GPUが「データ待ち」で止まる。<br>
+      HBMは帯域幅が<b>DDR5の約10〜15倍</b>。AI推論・学習の速度を直接左右する。
+    </div>
+
+    <div style="padding:8px 10px;border:1.5px solid #fca5a5;border-radius:6px 11px 5px 9px/11px 6px 9px 5px;
+                background:#fff1f2;font-size:9.5px;color:#7f1d1d;line-height:1.65;">
+      <b style="font-size:10.5px;display:block;margin-bottom:4px;color:#9f1239;">🌏 供給構造</b>
+      製造できるのは<b>SK Hynix・Samsung・Micron</b>の世界3社のみ。<br>
+      NVIDIAのH100/H200/B200にはHBM3Eが搭載。<br>
+      供給量＝AI半導体の生産上限を決める<b>最大ボトルネック</b>。<br>
+      <span style="color:#9f1239;font-weight:600;">▶ SK Hynixが現在NVIDIAの最大供給元。</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ↓ arrow ⑤→⑦ -->
+<div class="arr">
+  <svg width="40" height="32"><line x1="20" y1="0" x2="20" y2="22" stroke="#4338ca" stroke-width="2.5"/><polygon points="11,18 20,32 29,18" fill="#4338ca"/></svg>
+  <div class="arr-badge" style="background:#4338ca">📦 ロジック＋メモリをパッケージに封入</div>
+</div>
+
+<!-- ═══════════════════════════════
+     ⑦ パッケージング（後工程・先進実装）
+═══════════════════════════════ -->
+<div class="layer c7">
+  <div class="lc">
+    <div class="card c7">
+      <b>🇹🇼 ASE Group（日月光半導体）</b>
+      <s2>OSAT世界最大手 ── 台湾</s2>
+      <s2>チップの「組み立て・封止・検査」を一手に担う</s2>
+      <s2>AI向けチップのパッケージ受注が急増</s2>
+      <span class="pill p-top">◎ OSAT世界首位</span>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:100%"></div></div>
+      <div class="mbar-info">時価総額 約$200億　セクション内 最大 ★</div></div>
+    </div>
+    <div class="card c7">
+      <b>🇺🇸 Amkor Technology</b>
+      <s2>OSAT世界2位 ── 米国系</s2>
+      <s2>Apple・QualcommのモバイルSoCを量産パッケージ</s2>
+      <s2>日本・韓国・フィリピンに主要工場</s2>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:55%"></div></div>
+      <div class="mbar-info">時価総額 約$110億　セクション内 55%</div></div>
+    </div>
+  </div>
+
+  <div class="cc">
+    <div class="cn">
+      <span class="num">⑦</span>
+      パッケージング
+      <small>後工程・先進実装</small>
+    </div>
+  </div>
+
+  <div class="rc">
+    <div class="card c7">
+      <b>🇹🇼 TSMC CoWoS</b>
+      <s2>Chip on Wafer on Substrate</s2>
+      <s2>GPU＋HBMを1パッケージに「超高密度合体」</s2>
+      <s2>NVIDIAのH100/B200に採用・製造ボトルネック化</s2>
+      <span class="pill p-top">◎ 最先端 2.5D実装</span>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:100%"></div></div>
+      <div class="mbar-info">先進パッケージ需要急増 ── 世界最先端</div></div>
+    </div>
+    <div class="card c7">
+      <b>🇯🇵 イビデン</b>
+      <s2>ABF基板（FC-BGA）── 世界トップシェア</s2>
+      <s2>NVIDIA・IntelのAIチップ向け基板を独占供給</s2>
+      <s2>「縁の下の力持ち」── 替えのきかない存在</s2>
+      <span class="pill p-jp">🇯🇵 ABF基板 世界No.1</span>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:30%"></div></div>
+      <div class="mbar-info">時価総額 約$60億　基板需要拡大中 ▲</div></div>
+    </div>
+    <div class="card c7">
+      <b>🇯🇵 新光電気工業</b>
+      <s2>ICパッケージ基板 ── 富士通系</s2>
+      <s2>スマホ・PCチップ向けFC-BGA基板</s2>
+      <s2>インテル向けの供給比率が高い</s2>
+      <span class="pill p-jp">🇯🇵 基板メーカー</span>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:15%"></div></div>
+      <div class="mbar-info">時価総額 約$30億　セクション内 15%</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ↓ arrow ⑦→⑥ -->
+<div class="arr">
+  <svg width="40" height="32"><line x1="20" y1="0" x2="20" y2="22" stroke="#059669" stroke-width="2.5"/><polygon points="11,18 20,32 29,18" fill="#059669"/></svg>
+  <div class="arr-badge" style="background:#059669">🚀 AI / LLMが半導体需要を爆発的に牽引</div>
+</div>
+
+<!-- ═══════════════════════════════
+     ⑥ AI / LLM（需要を創る側）
+═══════════════════════════════ -->
+<div class="layer c6">
+  <div class="lc">
+    <!-- B2C 列ラベル -->
+    <div style="font-size:9.5px;font-weight:700;color:#0369a1;text-align:right;
+                padding:3px 8px;border:1.5px solid #0369a1;border-radius:20px;
+                background:#eff6ff;margin-bottom:6px;width:fit-content;align-self:flex-end;">
+      👥 一般消費者向け（B2C）
+    </div>
+    <div class="card c6">
+      <b>💬 ChatGPT（OpenAI）</b>
+      <s2>GPT-4o / o1 系列</s2>
+      <s2>個人ユーザー向けAI利用の世界的覇者</s2>
+      <s2>Microsoft Azure ＋ NVIDIA H100大量投資</s2>
+      <span class="pill" style="background:#dbeafe;color:#1e40af">👥 B2C 利用者数 世界最大</span>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:100%"></div></div>
+      <div class="mbar-info">👤 週次アクティブ 約4億人（WAU・OpenAI公式 2025.2）★</div></div>
+    </div>
+    <div class="card c6">
+      <b>✨ Gemini（Google）</b>
+      <s2>Google Search / YouTube / Workspace 統合</s2>
+      <s2>🔑 TPU v5 自社設計 → TSMC製造（独自路線）</s2>
+      <span class="pill p-new">🔀 B2C＋B2B 両輪展開</span>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:88%"></div></div>
+      <div class="mbar-info">👤 月次アクティブ 約3.5億人（MAU・Google公式 2024末）</div></div>
+    </div>
+  </div>
+
+  <div class="cc">
+    <div class="cn">
+      <span class="num">⑥</span>
+      AI / LLM
+      <small>ターゲット別・半導体需要の牽引役</small>
+    </div>
+    <!-- B2C vs B2B 軸ラベル -->
+    <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:8px;color:#94a3b8;">
+      <span>← B2C</span><span>B2B →</span>
+    </div>
+  </div>
+
+  <div class="rc">
+    <!-- B2B 列ラベル -->
+    <div style="font-size:9.5px;font-weight:700;color:#7c3aed;
+                padding:3px 8px;border:1.5px solid #7c3aed;border-radius:20px;
+                background:#f5f3ff;margin-bottom:6px;width:fit-content;">
+      🏢 法人・API向け（B2B）
+    </div>
+    <div class="card c6">
+      <b>🤖 Claude（Anthropic）</b>
+      <s2>Sonnet / Opus 系列</s2>
+      <s2>法人API契約が売上の主軸・利益率が業界最高水準</s2>
+      <s2>大企業が安全性・精度を評価して採用</s2>
+      <s2>Constitutional AI・ハルシネーション抑制</s2>
+      <span class="pill" style="background:#ede9fe;color:#5b21b6">🏢 B2B 特化・高利益率</span>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:75%"></div></div>
+      <div class="mbar-info">🏢 売上の大半が法人API契約（比率は業界最高水準・詳細非公開）</div></div>
+    </div>
+    <div class="card c6">
+      <b>🪟 Microsoft Copilot</b>
+      <s2>OpenAI GPT技術 × Azure × Office 365</s2>
+      <s2>Fortune 500企業の85%以上が導入済み</s2>
+      <s2>Word・Teams・Outlookへのシームレス統合</s2>
+      <span class="pill" style="background:#dbeafe;color:#1e40af">🏢 エンタープライズ最大手</span>
+      <div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:85%"></div></div>
+      <div class="mbar-info">🏢 Fortune500企業の85%以上が導入（Microsoft公式）</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ RELAY CONNECTIONS ═══ -->
+<div class="relay">
+  <h3>🔗 全体を横断する「リレー関係」── セクションをまたぐ重要な依存ライン</h3>
+  <div class="relay-grid">
+    <div class="rc2">
+      <b>NVIDIA × Micron × SK Hynix</b>
+      <div class="rch">
+        <span class="rchip" style="background:#ede9fe;color:#5b21b6">NVIDIA GPU</span>
+        <span style="color:#94a3b8">＋</span>
+        <span class="rchip" style="background:#fff1f2;color:#9f1239">HBM（メモリ）</span>
+      </div>
+      GPUは単体では動かず、横にHBMを「積層合体」して初めて真価を発揮。AI推論の心臓部コンビ。NVIDIAがSK HynixとMicron両社から調達し安定供給を確保。
+    </div>
+ 
